@@ -1,8 +1,8 @@
 {
-    "name": "login-recaptcha-bundle",
+    "name": "gabb1995/login-recaptcha-bundle",
     "license": "MIT",
     "type": "symfony-bundle",
-    "description": "Login Recaptcha Bundle for Symfony 3",
+    "description": "Login Recaptcha Bundle for Symfony 2/3",
     "homepage": "https://github.com/Gabb1995/login-recaptcha-bundle",
     "authors": [
         {
@@ -14,8 +14,8 @@
     ],
     "autoload": {
         "psr-0": {
-            "LoginRecaptchaBundle\\Tests\\": "tests/",
-            "LoginRecaptchaBundle\\": "src/"
+            "LoginRecaptcha\\Tests\\": "tests/",
+            "LoginRecaptcha\\": "src/"
         }
     },
     "require": {
@@ -26,9 +26,6 @@
     "require-dev": {
         "phpunit/phpunit": "~4.6",
         "symfony/symfony": "~2.3|~3.0"
-    },
-    "config": {
-        "bin-dir": "bin"
     },
     "prefer-stable": true,
     "minimum-stability": "stable"
