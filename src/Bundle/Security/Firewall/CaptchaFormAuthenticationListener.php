@@ -79,7 +79,7 @@ class CaptchaFormAuthenticationListener extends UsernamePasswordFormAuthenticati
         if ($response->isSuccess()) {
             return true;
         }
-        $this->logger->info('Recaptcha failed: '.$response->getErrorCodes());
+        $this->logger->info('Recaptcha failed: '.print_r($response->getErrorCodes()));
 
         return false;
     }
