@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace LoginRecaptcha\Bundle\CoreBundle\Security\Firewall;
+namespace LoginRecaptcha\Bundle\Security\Firewall;
 
 use LoginRecaptcha\Bundle\Exception\InvalidCaptchaException;
 use Psr\Log\LoggerInterface;

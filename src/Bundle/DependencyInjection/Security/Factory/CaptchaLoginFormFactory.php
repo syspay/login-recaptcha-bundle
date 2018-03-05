@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace LoginRecaptcha\Bundle\CoreBundle\DependencyInjection\Security\Factory;
+namespace LoginRecaptcha\Bundle\DependencyInjection\Security\Factory;
 
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\FormLoginFactory;
 
