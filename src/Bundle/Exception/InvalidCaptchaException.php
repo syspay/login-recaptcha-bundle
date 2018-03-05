@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Bundle\Exception;
+namespace LoginRecaptcha\Bundle\Exception;
 
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 

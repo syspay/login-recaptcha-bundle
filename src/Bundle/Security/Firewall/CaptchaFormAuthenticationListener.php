@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Bundle\CoreBundle\Security\Firewall;
+namespace LoginRecaptcha\Bundle\CoreBundle\Security\Firewall;
 
-use Bundle\Exception\InvalidCaptchaException;
+use LoginRecaptcha\Bundle\Exception\InvalidCaptchaException;
 use Psr\Log\LoggerInterface;
 use ReCaptcha\ReCaptcha;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

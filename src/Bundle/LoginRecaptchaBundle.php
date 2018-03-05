@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Bundle;
+namespace LoginRecaptcha\Bundle;
 
 use Bundle\DependencyInjection\Security\Factory\CaptchaLoginFormFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
