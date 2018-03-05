@@ -11,7 +11,7 @@
 
 namespace LoginRecaptcha\Bundle;
 
-use Bundle\DependencyInjection\Security\Factory\CaptchaLoginFormFactory;
+use LoginRecaptcha\Bundle\DependencyInjection\Security\Factory\CaptchaLoginFormFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
