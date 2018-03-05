@@ -1,0 +1,5 @@
+services:
+    security.authentication.listener.form_login_captcha:
+        class: LoginRecaptcha\Bundle\Security\Firewall\CaptchaFormAuthenticationListener
+        parent: security.authentication.listener.form
+        abstract: true
