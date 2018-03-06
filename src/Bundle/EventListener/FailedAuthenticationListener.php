@@ -17,9 +17,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Event\AuthenticationFailureEvent;
 
 /**
- * AuthenticationFailureListener
+ * FailedAuthenticationListener
  */
-class AuthenticationFailureListener
+class FailedAuthenticationListener
 {
     /** @var RequestStack $requestStack */
     private $requestStack;
