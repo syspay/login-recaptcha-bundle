@@ -8,7 +8,7 @@ Login reCAPTCHA Bundle
 * License: MIT, see [LICENSE](LICENSE)
 
 ## Description
-Login reCAPTCHA Bundle makes it easy for you to integrate Google reCAPTCHA inside login forms in Symfony.
+Login reCAPTCHA Bundle makes it easy for you to integrate Google reCAPTCHA inside login forms in Symfony 3.
 
 ## Installation
 This symfony bundle is available on Packagist as
