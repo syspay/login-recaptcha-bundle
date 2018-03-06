@@ -14,3 +14,8 @@ services:
             - { name: kernel.event_listener, event: security.authentication.failure, method: onAuthenticationFailure }
         calls:
             - [setFormManager, ['@?login_recaptcha.cache_client']]
+
+    login_recaptcha.captcha_login_form.manager:
+        class: LoginRecaptcha\Bundle\Manager\CaptchaLoginFormManager
+        calls:
+            - [setCacheClient, ['@?login_recaptcha.cache_client']]
