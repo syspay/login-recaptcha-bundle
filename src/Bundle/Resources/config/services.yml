@@ -3,3 +3,12 @@ services:
         class: LoginRecaptcha\Bundle\Security\Firewall\CaptchaFormAuthenticationListener
         parent: security.authentication.listener.form
         abstract: true
+        calls:
+            - [setFormManager, ['@?login_recaptcha.cache_client']]
+
+    login_recaptcha.failed_authentication.listener:
+        class: LoginRecaptcha\Bundle\EventListener\FailedAuthenticationListener
+        tags:
+            - { name: kernel.event_listener, event: security.authentication.failure, method: onAuthenticationFailure }
+        calls:
+            - [setFormManager, ['@?login_recaptcha.cache_client']]

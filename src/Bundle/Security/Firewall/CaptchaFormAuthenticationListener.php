@@ -11,7 +11,9 @@
 
 namespace LoginRecaptcha\Bundle\Security\Firewall;
 
+use LoginRecaptcha\Bundle\Client\CacheClientInterface;
 use LoginRecaptcha\Bundle\Exception\InvalidCaptchaException;
+use LoginRecaptcha\Bundle\Manager\CaptchaLoginFormManager;
 use Psr\Log\LoggerInterface;
 use ReCaptcha\ReCaptcha;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -31,6 +33,9 @@ use Symfony\Component\Security\Http\Session\SessionAuthenticationStrategyInterfa
  */
 class CaptchaFormAuthenticationListener extends UsernamePasswordFormAuthenticationListener
 {
+    /** @var CaptchaLoginFormManager $formManager */
+    private $formManager;
+
     /**
      * {@inheritdoc}
      */
@@ -38,7 +43,21 @@ class CaptchaFormAuthenticationListener extends UsernamePasswordFormAuthenticati
     {
         parent::__construct($tokenStorage, $authenticationManager, $sessionStrategy, $httpUtils, $providerKey, $successHandler, $failureHandler, array_merge(array(
             'google_recaptcha_secret' => null,
+            'always_captcha' => true,
         ), $options), $logger, $dispatcher);
+    }
+
+    /**
+     * setFormManager
+     *
+     * @param CacheClientInterface $cacheClient
+     */
+    public function setFormManager(CacheClientInterface $cacheClient)
+    {
+        if (!($this->options['always_captcha'])) {
+            $this->formManager = new CaptchaLoginFormManager();
+            $this->formManager->setCacheClient($cacheClient);
+        }
     }
 
     /**
@@ -46,19 +65,22 @@ class CaptchaFormAuthenticationListener extends UsernamePasswordFormAuthenticati
      */
     protected function attemptAuthentication(Request $request)
     {
-        $requestBag = $this->options['post_only'] ? $request->request : $request;
-        $recaptchaResponse = ParameterBagUtils::getParameterBagValue($requestBag, 'g-recaptcha-response');
+        /* If always_captcha option is true always validate or if captcha is needed meaning after several invalid attempts */
+        if ($this->options['always_captcha'] === true || (!is_null($this->formManager) && $this->formManager->isCaptchaNeeded($request->getClientIp()))) {
+            $requestBag = $this->options['post_only'] ? $request->request : $request;
+            $recaptchaResponse = ParameterBagUtils::getParameterBagValue($requestBag, 'g-recaptcha-response');
 
-
-        if (!$this->isValidCaptchaResponse($recaptchaResponse, $request->getClientIp())) {
-            throw new InvalidCaptchaException();
+            if (!$this->isValidCaptchaResponse($recaptchaResponse, $request->getClientIp())) {
+                throw new InvalidCaptchaException();
+            }
         }
 
+        /* Do the normal form_login attemptAuthentication */
         return parent::attemptAuthentication($request);
     }
 
     /**
-     * isValidCaptchaResponse
+     * Checks if the captcha is valid or not by sending a request to the google reCAPTCHA api
      *
      * @param String $captchaResponse
      * @param String $clientIp
@@ -70,7 +92,7 @@ class CaptchaFormAuthenticationListener extends UsernamePasswordFormAuthenticati
         if (is_null($this->options['google_recaptcha_secret'])) {
             $this->logger->error('Google recaptcha secret key is null, this should be inputted in the form_login_captcha option google_recaptcha_secret.');
 
-            throw new \Exception('Google recaptcha secret key is null');
+            throw new \Exception('Google recaptcha secret key is null, did you forget to input it in the form_login_captcha option google_recaptcha_secret?');
         }
 
         $recaptcha = new ReCaptcha($this->options['google_recaptcha_secret']);

@@ -24,6 +24,7 @@ class CaptchaLoginFormFactory extends FormLoginFactory
     public function __construct()
     {
         $this->addOption('google_recaptcha_secret', null);
+        $this->addOption('always_captcha', true);
 
         parent::__construct();
     }
