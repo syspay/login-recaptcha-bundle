@@ -24,8 +24,8 @@ class FailedAuthenticationListener
     /** @var RequestStack $requestStack */
     private $requestStack;
 
-    /** @var CaptchaManager $captchaManager */
-    private $captchaManager;
+    /** @var CaptchaLoginFormManager $formManager */
+    private $formManager;
 
     /**
      * __construct
@@ -56,7 +56,9 @@ class FailedAuthenticationListener
      */
     public function onAuthenticationFailure(AuthenticationFailureEvent $event)
     {
-        $request = $this->requestStack->getCurrentRequest();
-        $this->formManager->increaseFailedAttempts($request->getClientIp());
+        if (!is_null($this->formManager)) {
+            $request = $this->requestStack->getCurrentRequest();
+            $this->formManager->increaseFailedAttempts($request->getClientIp());
+        }
     }
 }

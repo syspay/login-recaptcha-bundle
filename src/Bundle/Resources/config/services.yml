@@ -8,6 +8,8 @@ services:
 
     login_recaptcha.failed_authentication.listener:
         class: LoginRecaptcha\Bundle\EventListener\FailedAuthenticationListener
+        arguments:
+            - '@request_stack'
         tags:
             - { name: kernel.event_listener, event: security.authentication.failure, method: onAuthenticationFailure }
         calls:
