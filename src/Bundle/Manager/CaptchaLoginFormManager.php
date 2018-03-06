@@ -17,7 +17,7 @@ use LoginRecaptcha\Bundle\Util\IpRangeUtil;
 /**
  * All functions related to captcha login form
  */
-class CatpchaLoginFormManager
+class CaptchaLoginFormManager
 {
     const PREFIX_FAIL_IP_RANGE = 'fail_ip_range:';
 

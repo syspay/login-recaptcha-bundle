@@ -43,10 +43,8 @@ class FailedAuthenticationListener
      */
     public function setFormManager(CacheClientInterface $cacheClient)
     {
-        if (!($this->options['always_captcha'])) {
-            $this->formManager = new CaptchaLoginFormManager();
-            $this->formManager->setCacheClient($cacheClient);
-        }
+        $this->formManager = new CaptchaLoginFormManager();
+        $this->formManager->setCacheClient($cacheClient);
     }
 
     /**

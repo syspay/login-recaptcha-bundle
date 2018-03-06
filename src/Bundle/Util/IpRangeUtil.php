@@ -1,6 +1,6 @@
 <?php
 
-namespace LoginRecaptcha\Bundle\Utils;
+namespace LoginRecaptcha\Bundle\Util;
 
 /*
  * This file is part of the Login Recaptcha Bundle.
