@@ -72,7 +72,7 @@ class PredisClient implements CacheClientInterface
      */
     public function get($key)
     {
-        $this->cacheClient->get($key);
+        return $this->cacheClient->get($key);
     }
 
     /**

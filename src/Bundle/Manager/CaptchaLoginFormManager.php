@@ -76,7 +76,7 @@ class CaptchaLoginFormManager
     private function checkIpRange($ipRange)
     {
         $cachedIpRange = $this->cacheClient->get(self::PREFIX_FAIL_IP_RANGE.$ipRange);
-        if ($cachedIpRange && $cachedIpRange >= $this->$this->cacheClient->getAttempts()) {
+        if ($cachedIpRange && $cachedIpRange >= $this->cacheClient->getAttempts()) {
             return true;
         }
 
