@@ -1,8 +1,8 @@
 Login reCAPTCHA Bundle
 ===================
-[![License](https://img.shields.io/packagist/l/gabb1995/login-recaptcha-bundle.svg)](https://packagist.org/packages/gabb1995/login-recaptcha-bundle)
+[![License](https://img.shields.io/packagist/l/syspay/login-recaptcha-bundle.svg)](https://packagist.org/packages/syspay/login-recaptcha-bundle)
 
-* Packagist Page:  https://packagist.org/packages/gabb1995/login-recaptcha-bundle
+* Packagist Page:  https://packagist.org/packages/syspay/login-recaptcha-bundle
 * Repository: https://github.com/Gabb1995/login-recaptcha-bundle
 * Version: 2.0.0
 * License: MIT, see [LICENSE](LICENSE)
@@ -12,20 +12,20 @@ Login reCAPTCHA Bundle makes it easy for you to integrate Google reCAPTCHA insid
 
 ## Installation
 This symfony bundle is available on Packagist as
-[`gabb1995/login-recaptcha-bundle`](https://packagist.org/packages/gabb1995/login-recaptcha-bundle) and can be
+[`syspay/login-recaptcha-bundle`](https://packagist.org/packages/syspay/login-recaptcha-bundle) and can be
 installed either by running the `composer require` command or adding the library
 to your `composer.json`.
 
 To add this dependency using the command, run the following from within your
 project directory:
 ```
-composer require gabb1995/login-recaptcha-bundle
+composer require syspay/login-recaptcha-bundle
 ```
 
 Alternatively, add the dependency directly to your `composer.json` file:
 ```json
 "require": {
-    "gabb1995/login-recaptcha-bundle": "^2.0"
+    "syspay/login-recaptcha-bundle": "^2.0"
 }
 ```
 After composer installation go to your `AppKernel.php` file and add the following line inside `registerBundles()`:

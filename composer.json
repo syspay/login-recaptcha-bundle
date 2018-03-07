@@ -1,9 +1,9 @@
 {
-    "name": "gabb1995/login-recaptcha-bundle",
+    "name": "syspay/login-recaptcha-bundle",
     "license": "MIT",
     "type": "symfony-bundle",
     "description": "Login Recaptcha Bundle for Symfony 3",
-    "homepage": "https://github.com/Gabb1995/login-recaptcha-bundle",
+    "homepage": "https://github.com/syspay/login-recaptcha-bundle",
     "authors": [
         {
             "name": "Gabriel Caruana",
