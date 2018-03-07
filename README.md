@@ -4,7 +4,7 @@ Login reCAPTCHA Bundle
 
 * Packagist Page:  https://packagist.org/packages/syspay/login-recaptcha-bundle
 * Repository: https://github.com/Gabb1995/login-recaptcha-bundle
-* Version: 2.0.0
+* Version: 2.1.0
 * License: MIT, see [LICENSE](LICENSE)
 
 ## Description
@@ -25,7 +25,7 @@ composer require syspay/login-recaptcha-bundle
 Alternatively, add the dependency directly to your `composer.json` file:
 ```json
 "require": {
-    "syspay/login-recaptcha-bundle": "^2.0"
+    "syspay/login-recaptcha-bundle": "^2.1"
 }
 ```
 After composer installation go to your `AppKernel.php` file and add the following line inside `registerBundles()`:
