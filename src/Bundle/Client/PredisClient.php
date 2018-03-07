@@ -11,7 +11,7 @@
 
 namespace LoginRecaptcha\Bundle\Client;
 
-use Predis\Client;
+use Predis\ClientInterface;
 
 /**
  * PredisClient
@@ -20,7 +20,7 @@ use Predis\Client;
  */
 class PredisClient implements CacheClientInterface
 {
-    /** @var Client $cacheClient */
+    /** @var ClientInterface $cacheClient */
     private $cacheClient;
 
     /** @var int $attempts */
@@ -32,11 +32,11 @@ class PredisClient implements CacheClientInterface
     /**
      * __construct
      *
-     * @param Client $cacheClient
+     * @param ClientInterface $cacheClient
      * @param int    $attempts
      * @param int    $expiry
      */
-    public function __construct(Client $cacheClient, $attempts, $expiry)
+    public function __construct(ClientInterface $cacheClient, $attempts, $expiry)
     {
         $this->cacheClient = $cacheClient;
         $this->attempts    = $attempts;
