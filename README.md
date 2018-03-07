@@ -3,8 +3,8 @@ Login reCAPTCHA Bundle
 [![License](https://img.shields.io/packagist/l/syspay/login-recaptcha-bundle.svg)](https://packagist.org/packages/syspay/login-recaptcha-bundle)
 
 * Packagist Page:  https://packagist.org/packages/syspay/login-recaptcha-bundle
-* Repository: https://github.com/Gabb1995/login-recaptcha-bundle
-* Version: 2.1.0
+* Repository: https://github.com/syspay/login-recaptcha-bundle
+* Version: 2.1.1
 * License: MIT, see [LICENSE](LICENSE)
 
 ## Description
