@@ -11,8 +11,7 @@
 
 namespace LoginRecaptcha\Bundle\EventListener;
 
-use LoginRecaptcha\Bundle\Client\CacheClientInterface;
-use LoginRecaptcha\Bundle\Manager\CaptchaLoginFormManager;
+use LoginRecaptcha\Bundle\Security\Firewall\CaptchaFormAuthenticationListener;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Event\AuthenticationFailureEvent;
 
@@ -24,8 +23,9 @@ class FailedAuthenticationListener
     /** @var RequestStack $requestStack */
     private $requestStack;
 
-    /** @var CaptchaLoginFormManager $formManager */
-    private $formManager;
+    /** @var CaptchaFormAuthenticationListener $captchaFormAuthenticationListener */
+    private $captchaFormAuthenticationListener;
+
 
     /**
      * __construct
@@ -37,26 +37,25 @@ class FailedAuthenticationListener
     }
 
     /**
-     * setFormManager
-     *
-     * @param CacheClientInterface $cacheClient
+     * @param CaptchaFormAuthenticationListener $captchaFormAuthenticationListener
      */
-    public function setFormManager(CacheClientInterface $cacheClient)
+    public function setCaptchaFormAuthenticationListener(CaptchaFormAuthenticationListener $captchaFormAuthenticationListener)
     {
-        $this->formManager = new CaptchaLoginFormManager();
-        $this->formManager->setCacheClient($cacheClient);
+        $this->captchaFormAuthenticationListener = $captchaFormAuthenticationListener;
     }
 
     /**
      * Called on authentication failure
      *
-     * @param AuthenticationEvent $event
+     * @throws \Exception
+     *
+     * @param AuthenticationFailureEvent $event
      */
     public function onAuthenticationFailure(AuthenticationFailureEvent $event)
     {
-        if (!is_null($this->formManager)) {
+        if ($this->captchaFormAuthenticationListener) {
             $request = $this->requestStack->getCurrentRequest();
-            $this->formManager->increaseFailedAttempts($request->getClientIp());
+            $this->captchaFormAuthenticationListener->increaseFailedAttempts($request->getClientIp());
         }
     }
 }

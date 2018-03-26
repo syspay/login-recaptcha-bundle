@@ -13,7 +13,7 @@ namespace LoginRecaptcha\Bundle\Security\Firewall;
 
 use LoginRecaptcha\Bundle\Client\CacheClientInterface;
 use LoginRecaptcha\Bundle\Exception\InvalidCaptchaException;
-use LoginRecaptcha\Bundle\Manager\CaptchaLoginFormManager;
+use LoginRecaptcha\Bundle\Util\IpRangeUtil;
 use Psr\Log\LoggerInterface;
 use ReCaptcha\ReCaptcha;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -33,8 +33,10 @@ use Symfony\Component\Security\Http\Session\SessionAuthenticationStrategyInterfa
  */
 class CaptchaFormAuthenticationListener extends UsernamePasswordFormAuthenticationListener
 {
-    /** @var CaptchaLoginFormManager $formManager */
-    private $formManager;
+    const PREFIX_FAIL_IP_RANGE = 'fail_ip_range:';
+
+    /** @var CacheClientInterface $cacheClient */
+    private $cacheClient;
 
     /**
      * {@inheritdoc}
@@ -44,29 +46,80 @@ class CaptchaFormAuthenticationListener extends UsernamePasswordFormAuthenticati
         parent::__construct($tokenStorage, $authenticationManager, $sessionStrategy, $httpUtils, $providerKey, $successHandler, $failureHandler, array_merge(array(
             'google_recaptcha_secret' => null,
             'always_captcha' => true,
+            'attempts' => 0,
+            'cache_expiry' => 300,
         ), $options), $logger, $dispatcher);
     }
 
     /**
-     * setFormManager
+     * setCacheClient
      *
      * @param CacheClientInterface $cacheClient
      */
-    public function setFormManager(CacheClientInterface $cacheClient)
+    public function setCacheClient(CacheClientInterface $cacheClient)
     {
-        if (!($this->options['always_captcha'])) {
-            $this->formManager = new CaptchaLoginFormManager();
-            $this->formManager->setCacheClient($cacheClient);
-        }
+        $this->cacheClient = $cacheClient;
     }
 
+    /**
+     * @param String|null $clientIp
+     *
+     * @throws \Exception
+     *
+     * @return bool
+     */
+    public function isCaptchaNeeded($clientIp = null)
+    {
+        if ($this->options['always_captcha'] === true) {
+            return true;
+        }
+
+        if (!$this->cacheClient) {
+            throw new \Exception('Cache client cannot be null if always_captcha is not true.');
+        }
+
+        if (!isset($this->options['attempts'])) {
+            throw new \Exception('attempts must be set to use isCaptchaNeeded when always_captcha is not true.');
+        }
+
+        return $this->checkIpRange(IpRangeUtil::getIpRange($clientIp));
+    }
+
+    /**
+     * increaseFailedAttempts
+     *
+     * @throws \Exception
+     *
+     * @param String $clientIp
+     */
+    public function increaseFailedAttempts($clientIp)
+    {
+        if (!$this->cacheClient) {
+            throw new \Exception('Cache client cannot be null if always_captcha is not true.');
+        }
+
+        if (!isset($this->options['cache_expiry'])) {
+            throw new \Exception('cache_expiry must be set to use increaseFailedAttempts when always_captcha is not true.');
+        }
+
+        $ipRange = IpRangeUtil::getIpRange($clientIp);
+
+        $cachedIpRange = $this->cacheClient->get(self::PREFIX_FAIL_IP_RANGE.$ipRange);
+
+        if ($cachedIpRange) {
+            $this->cacheClient->incr(self::PREFIX_FAIL_IP_RANGE.$ipRange);
+        } else {
+            $this->cacheClient->set(self::PREFIX_FAIL_IP_RANGE.$ipRange, 1);
+        }
+
+        $this->cacheClient->expire(self::PREFIX_FAIL_IP_RANGE.$ipRange, $this->options['cache_expiry']);
+    }
     /**
      * {@inheritdoc}
      */
     protected function attemptAuthentication(Request $request)
     {
-        /* If always_captcha option is true always validate or if captcha is needed meaning after several invalid attempts */
-        if ($this->options['always_captcha'] === true || (!is_null($this->formManager) && $this->formManager->isCaptchaNeeded($request->getClientIp()))) {
+        if ($this->isCaptchaNeeded($request->getClientIp())) {
             $requestBag = $this->options['post_only'] ? $request->request : $request;
             $recaptchaResponse = ParameterBagUtils::getParameterBagValue($requestBag, 'g-recaptcha-response');
 
@@ -85,13 +138,13 @@ class CaptchaFormAuthenticationListener extends UsernamePasswordFormAuthenticati
      * @param String $captchaResponse
      * @param String $clientIp
      *
+     * @throws \Exception
+     *
      * @return boolean
      */
     private function isValidCaptchaResponse($captchaResponse, $clientIp)
     {
         if (is_null($this->options['google_recaptcha_secret'])) {
-            $this->logger->error('Google recaptcha secret key is null, this should be inputted in the form_login_captcha option google_recaptcha_secret.');
-
             throw new \Exception('Google recaptcha secret key is null, did you forget to input it in the form_login_captcha option google_recaptcha_secret?');
         }
 
@@ -101,7 +154,23 @@ class CaptchaFormAuthenticationListener extends UsernamePasswordFormAuthenticati
         if ($response->isSuccess()) {
             return true;
         }
-        $this->logger->info('Recaptcha failed: '.print_r($response->getErrorCodes()));
+
+        return false;
+    }
+
+    /**
+     * checkIpRange
+     *
+     * @param string $ipRange Format must be xxx-xxx
+     *
+     * @return boolean
+     */
+    private function checkIpRange($ipRange)
+    {
+        $cachedIpRange = $this->cacheClient->get(self::PREFIX_FAIL_IP_RANGE.$ipRange);
+        if ($cachedIpRange && $cachedIpRange >= $this->options['attempts']) {
+            return true;
+        }
 
         return false;
     }
