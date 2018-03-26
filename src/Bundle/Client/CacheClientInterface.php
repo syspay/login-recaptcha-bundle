@@ -49,19 +49,4 @@ interface CacheClientInterface
      * @param int    $seconds
      */
     public function expire($key, $seconds);
-
-    /**
-     * Get the number of failed login attempts before showing the captcha
-     *
-     * @return int
-     */
-    public function getAttempts();
-
-    /**
-     * Get the expiry in seconds of the cache key where the number of failed attempts
-     * is stored
-     *
-     * @return int
-     */
-    public function getExpiry();
 }

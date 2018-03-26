@@ -23,40 +23,14 @@ class PredisClient implements CacheClientInterface
     /** @var Client $cacheClient */
     private $cacheClient;
 
-    /** @var int $attempts */
-    private $attempts;
-
-    /** @var int $expiry */
-    private $expiry;
-
     /**
      * __construct
      *
      * @param Client $cacheClient
-     * @param int    $attempts
-     * @param int    $expiry
      */
-    public function __construct(Client $cacheClient, $attempts, $expiry)
+    public function __construct(Client $cacheClient)
     {
         $this->cacheClient = $cacheClient;
-        $this->attempts    = $attempts;
-        $this->expiry      = $expiry;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAttempts()
-    {
-        return $this->attempts;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getExpiry()
-    {
-        return $this->expiry;
     }
 
     /**
