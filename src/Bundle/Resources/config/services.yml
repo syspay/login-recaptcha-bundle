@@ -13,5 +13,5 @@ services:
         tags:
             - { name: kernel.event_listener, event: security.authentication.failure, method: onAuthenticationFailure }
         calls:
-            - [setCaptchaFormAuthenticationListener, ['@?login_recaptcha.cache_client']]
+            - [setCaptchaFormAuthenticationListener, ['@security.authentication.listener.form_login_captcha']]
 
