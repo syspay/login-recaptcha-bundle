@@ -4,7 +4,7 @@ Login reCAPTCHA Bundle
 
 * Packagist Page:  https://packagist.org/packages/syspay/login-recaptcha-bundle
 * Repository: https://github.com/syspay/login-recaptcha-bundle
-* Version: 2.1.1
+* Version: 2.1.2
 * License: MIT, see [LICENSE](LICENSE)
 
 ## Description
