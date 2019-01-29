@@ -20,8 +20,8 @@
     },
     "require": {
         "php": ">=5.5.1",
-        "symfony/framework-bundle": "~3.0",
-        "symfony/security-bundle": "~3.0",
+        "symfony/framework-bundle": "~3.0|~4.0",
+        "symfony/security-bundle": "~3.0|~4.0",
         "google/recaptcha": "^1.1",
         "predis/predis": "^1.0"
     },
